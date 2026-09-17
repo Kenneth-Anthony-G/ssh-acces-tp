@@ -10,7 +10,7 @@ fi
 
 LOGIN="$1"
 PUBLIC_KEY="$2"
-RAPPORT="/home/edem/ssh-access/files/rapport.txt"
+RAPPORT="/home/edem/ssh-access/files/rapport_projet_synthese_linux.pdf"
 
 # Vérification du login Linux
 if [[ ! "$LOGIN" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]]; then
