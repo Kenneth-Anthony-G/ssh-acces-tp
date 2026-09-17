@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Monitoring - SSH Access</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="monitoring-container">
+
+    <!-- Header -->
+
+    <div class="monitoring-header">
+
+        <div>
+
+            <h1>Monitoring de la VM</h1>
+
+            <p>
+                Surveillance des ressources et des utilisateurs SSH
+            </p>
+        </div>
+
+
+        <div class="monitoring-actions">
+
+            <a
+                href="/"
+                class="back-button"
+            >
+                ← Accueil
+            </a>
+
+            <button
+                type="button"
+                id="refresh-button"
+                class="refresh-button"
+            >
+                Actualiser
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- Erreur -->
+
+    <div
+        id="monitoring-error"
+        class="alert error"
+        style="display: none;"
+    ></div>
+
+
+    <!-- Informations générales -->
+
+    <div class="monitoring-info">
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Machine
+            </span>
+
+            <strong id="hostname">
+                Chargement...
+            </strong>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Uptime
+            </span>
+
+            <strong id="uptime">
+                Chargement...
+            </strong>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Load average
+            </span>
+
+            <strong id="load-average">
+                Chargement...
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- Ressources -->
+
+    <div class="metrics-grid">
+
+
+        <!-- CPU -->
+
+        <div class="metric-card">
+
+            <div class="metric-header">
+
+                <span>CPU</span>
+
+                <strong id="cpu-percent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    id="cpu-bar"
+                    class="progress-bar"
+                    style="width: 0%"
+                ></div>
+
+            </div>
+
+
+            <p>
+                Utilisation processeur
+            </p>
+
+        </div>
+
+
+        <!-- RAM -->
+
+        <div class="metric-card">
+
+            <div class="metric-header">
+
+                <span>Mémoire RAM</span>
+
+                <strong id="memory-percent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    id="memory-bar"
+                    class="progress-bar"
+                    style="width: 0%"
+                ></div>
+
+            </div>
+
+
+            <p id="memory-details">
+                Chargement...
+            </p>
+
+        </div>
+
+
+        <!-- Disque -->
+
+        <div class="metric-card">
+
+            <div class="metric-header">
+
+                <span>Disque</span>
+
+                <strong id="disk-percent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    id="disk-bar"
+                    class="progress-bar"
+                    style="width: 0%"
+                ></div>
+
+            </div>
+
+
+            <p id="disk-details">
+                Chargement...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Utilisateurs -->
+
+    <div class="monitoring-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Utilisateurs SSH
+                </h2>
+
+                <p>
+                    Comptes utilisateurs présents sur la VM
+                </p>
+
+            </div>
+
+
+            <span
+                id="user-count"
+                class="section-count"
+            >
+                0
+            </span>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Login
+                        </th>
+
+                        <th>
+                            UID
+                        </th>
+
+                        <th>
+                            Répertoire
+                        </th>
+
+                        <th>
+                            Shell
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="users-table">
+
+                    <tr>
+
+                        <td colspan="4">
+                            Chargement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Processus -->
+
+    <div class="monitoring-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Processus
+                </h2>
+
+                <p>
+                    Processus consommant le plus de ressources CPU
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Utilisateur
+                        </th>
+
+                        <th>
+                            PID
+                        </th>
+
+                        <th>
+                            Processus
+                        </th>
+
+                        <th>
+                            CPU
+                        </th>
+
+                        <th>
+                            RAM
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="processes-table">
+
+                    <tr>
+
+                        <td colspan="5">
+                            Chargement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+
+    <div class="monitoring-footer">
+
+        <span>
+            Actualisation automatique toutes les 5 secondes
+        </span>
+
+        <span id="last-update">
+            En attente...
+        </span>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const refreshButton =
+    document.getElementById("refresh-button");
+
+
+const errorElement =
+    document.getElementById("monitoring-error");
+
+
+/*
+ * Empêche les valeurs de dépasser
+ * 0 - 100 pour les barres.
+ */
+function clamp(value) {
+
+    return Math.min(
+        100,
+        Math.max(0, Number(value) || 0)
+    );
+
+}
+
+
+/*
+ * Met à jour une barre de progression.
+ */
+function updateBar(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+    element.style.width =
+        clamp(value) + "%";
+
+}
+
+
+/*
+ * Met à jour les informations
+ * générales de la VM.
+ */
+function updateGeneralInfo(data) {
+
+    document.getElementById("hostname")
+        .textContent = data.hostname;
+
+    document.getElementById("uptime")
+        .textContent = data.uptime;
+
+    document.getElementById("load-average")
+        .textContent = data.load_average;
+
+}
+
+
+/*
+ * Met à jour CPU, RAM et disque.
+ */
+function updateMetrics(data) {
+
+    const cpu =
+        clamp(data.cpu_percent);
+
+    const memory =
+        data.memory;
+
+    const disk =
+        data.disk;
+
+
+    document.getElementById("cpu-percent")
+        .textContent =
+        cpu.toFixed(1) + "%";
+
+    updateBar(
+        "cpu-bar",
+        cpu
+    );
+
+
+    document.getElementById("memory-percent")
+        .textContent =
+        Number(memory.percent).toFixed(1) + "%";
+
+    updateBar(
+        "memory-bar",
+        memory.percent
+    );
+
+
+    document.getElementById("memory-details")
+        .textContent =
+        `${memory.used} MB / ${memory.total} MB`;
+
+
+    document.getElementById("disk-percent")
+        .textContent =
+        disk.percent + "%";
+
+    updateBar(
+        "disk-bar",
+        disk.percent
+    );
+
+
+    document.getElementById("disk-details")
+        .textContent =
+        `${disk.used} MB / ${disk.total} MB`;
+
+}
+
+
+/*
+ * Met à jour la liste des utilisateurs.
+ */
+function updateUsers(users) {
+
+    const table =
+        document.getElementById("users-table");
+
+    document.getElementById("user-count")
+        .textContent = users.length;
+
+
+    if (!users.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    Aucun utilisateur trouvé.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML = users.map(user => `
+
+        <tr>
+
+            <td>
+                <strong>${escapeHtml(user.login)}</strong>
+            </td>
+
+            <td>
+                ${escapeHtml(user.uid)}
+            </td>
+
+            <td>
+                <code>
+                    ${escapeHtml(user.home)}
+                </code>
+            </td>
+
+            <td>
+                <code>
+                    ${escapeHtml(user.shell)}
+                </code>
+            </td>
+
+        </tr>
+
+    `).join("");
+
+}
+
+
+/*
+ * Met à jour les processus.
+ */
+function updateProcesses(processes) {
+
+    const table =
+        document.getElementById("processes-table");
+
+
+    if (!processes.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    Aucun processus trouvé.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML = processes.map(process => `
+
+        <tr>
+
+            <td>
+                ${escapeHtml(process.user)}
+            </td>
+
+            <td>
+                ${escapeHtml(process.pid)}
+            </td>
+
+            <td>
+                <code>
+                    ${escapeHtml(process.command)}
+                </code>
+            </td>
+
+            <td>
+                ${escapeHtml(process.cpu)}%
+            </td>
+
+            <td>
+                ${escapeHtml(process.memory)}%
+            </td>
+
+        </tr>
+
+    `).join("");
+
+}
+
+
+/*
+ * Protection contre l'injection HTML.
+ */
+function escapeHtml(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(value);
+
+    return div.innerHTML;
+
+}
+
+
+/*
+ * Récupération des données.
+ */
+async function loadMonitoring() {
+
+    try {
+
+        const response =
+            await fetch("/api/monitoring");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Erreur HTTP " + response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.message ||
+                "Erreur du daemon"
+            );
+
+        }
+
+
+        const data =
+            result.data;
+
+
+        updateGeneralInfo(data);
+
+        updateMetrics(data);
+
+        updateUsers(data.users || []);
+
+        updateProcesses(data.processes || []);
+
+
+        errorElement.style.display =
+            "none";
+
+
+        document.getElementById("last-update")
+            .textContent =
+            "Dernière actualisation : " +
+            new Date().toLocaleTimeString("fr-FR");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        errorElement.textContent =
+            "Impossible de récupérer les données : " +
+            error.message;
+
+
+        errorElement.style.display =
+            "block";
+
+    }
+
+}
+
+
+/*
+ * Bouton d'actualisation manuelle.
+ */
+refreshButton.addEventListener(
+    "click",
+    loadMonitoring
+);
+
+
+/*
+ * Première récupération.
+ */
+loadMonitoring();
+
+
+/*
+ * Actualisation automatique.
+ */
+setInterval(
+    loadMonitoring,
+    5000
+);
+
+</script>
+
+</body>
+
+</html>

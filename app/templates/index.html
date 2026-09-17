@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande d'accès SSH</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <div class="header">
+                <h1>Demande d'accès SSH</h1>
+                <p>Demandez un accès SSH à la machine virtuelle.</p>
+            </div>
+
+            {% if success %}
+                <div class="alert success">{{ success }}</div>
+            {% endif %}
+
+            {% if error %}
+                <div class="alert error">{{ error }}</div>
+            {% endif %}
+
+            <form action="/request-access" method="post">
+                <div class="form-group">
+                    <label for="login">Login</label>
+                    <input
+                        type="text"
+                        id="login"
+                        name="login"
+                        placeholder="exemple : kenneth"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="public_key">Clé publique SSH</label>
+                    <textarea
+                        id="public_key"
+                        name="public_key"
+                        rows="5"
+                        placeholder="ssh-ed25519 AAAAC3... utilisateur@machine"
+                        required
+                    ></textarea>
+                    <small>Exemple : ssh-ed25519 AAAAC3... utilisateur@machine</small>
+                </div>
+
+                <button type="submit">Demander l'accès SSH</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
+
