@@ -52,10 +52,10 @@ chmod 600 "$SSH_DIR/authorized_keys"
 chown -R "$LOGIN:$LOGIN" "$SSH_DIR"
 
 # Copie du fichier de création
-cp "$RAPPORT" "/home/$LOGIN/creation.txt"
+cp "$RAPPORT" "/home/$LOGIN/rapport_projet.pdf"
 
 # Propriétaire et permissions
-chown "$LOGIN:$LOGIN" "/home/$LOGIN/creation.txt"
-chmod 644 "/home/$LOGIN/creation.txt"
+chown "$LOGIN:$LOGIN" "/home/$LOGIN/rapport_projet.pdf"
+chmod 644 "/home/$LOGIN/rapport_projet.pdf"
 
 echo "Utilisateur SSH '$LOGIN' créé avec succès."
