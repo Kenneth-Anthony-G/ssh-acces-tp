@@ -390,6 +390,31 @@ code {
     }
 
 }
+.monitoring-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    padding: 13px;
+    margin-top: 15px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+
+    background: white;
+    color: #374151;
+
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.monitoring-button:hover {
+    background: #f9fafb;
+}
 
 
 @media (max-width: 500px) {
